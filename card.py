@@ -1,4 +1,5 @@
 """Script to build digital Christmas card."""
+
 from PIL import Image, ImageDraw, ImageFont
 
 IMAGE_HEIGHT = 5000
@@ -8,28 +9,71 @@ CHRISTMAS_TREE_COLOUR = (26, 222, 51)
 
 
 def draw_rectangle(draw, coords, fill, width=0, outline=None):
+    """
+    Draw a rectangle on the image.
+
+    Args:
+        draw (ImageDraw): The ImageDraw object to draw on.
+        coords (list): The coordinates of the rectangle.
+        fill (str): The fill colour of the rectangle.
+        width (int): The width of the rectangle.
+        outline (str): The outline colour of the rectangle.
+    """
     draw.rectangle(coords, fill=fill, width=width, outline=outline)
 
 
 def draw_ellipse(draw, coords, fill, outline=None):
+    """
+    Draw an ellipse on the image.
+
+    Args:
+        draw (ImageDraw): The ImageDraw object to draw on.
+        coords (list): The coordinates of the ellipse.
+        fill (str): The fill colour of the ellipse.
+        outline (str): The outline colour of the ellipse.
+    """
     draw.ellipse(coords, fill=fill, outline=outline)
 
 
 def draw_text(draw, coords, text, font, fill=(255, 255, 255)):
+    """
+    Draw text on the image.
+
+    Args:
+        draw (ImageDraw): The ImageDraw object to draw on.
+        coords (list): The coordinates of the text.
+        text (str): The text to draw.
+        font (ImageFont): The font to use.
+        fill (str): The fill colour of the text.
+    """
     draw.text(coords, text, fill, font=font)
 
 
 def draw_christmas_tree(draw, image_width, image_height):
+    """
+    Draw a Christmas tree on the image.
+
+    Args:
+        draw (ImageDraw): The ImageDraw object to draw on.
+        image_width (int): The width of the image.
+        image_height (int): The height of the image.
+    """
     tree_coords = [
-        [(70, 20), (90, 20), (80, 5)],
-        [(70, 35), (90, 35), (80, 15)],
-        [(65, 55), (95, 55), (80, 30)],
-        [(60, 75), (98, 75), (80, 40)],
+        [70, 20, 90, 20, 80, 5],
+        [70, 35, 90, 35, 80, 15],
+        [65, 55, 95, 55, 80, 30],
+        [60, 75, 98, 75, 80, 40],
     ]
     for coords in tree_coords:
         draw.polygon(
             [
-                (image_width / 100) * x for x, y in coords] + [(image_height / 100) * y for x, y in coords],
+                (image_width / 100) * coords[0],
+                (image_height / 100) * coords[1],
+                (image_width / 100) * coords[2],
+                (image_height / 100) * coords[3],
+                (image_width / 100) * coords[4],
+                (image_height / 100) * coords[5],
+            ],
             fill=CHRISTMAS_TREE_COLOUR,
         )
     draw_rectangle(
@@ -58,6 +102,16 @@ def draw_christmas_tree(draw, image_width, image_height):
 
 
 def draw_baubles(draw, image_width, image_height, light_group_1, light_group_2):
+    """
+    Draw baubles on the Christmas tree, flashing colours.
+
+    Args:
+        draw (ImageDraw): The ImageDraw object to draw on.
+        image_width (int): The width of the image.
+        image_height (int): The height of the image.
+        light_group_1 (str): The colour of the first group of lights.
+        light_group_2 (str): The colour of the second group of lights.
+    """
     bauble_coords = [
         [70, 20, 75, 25, light_group_1],
         [85, 20, 90, 25, light_group_2],
@@ -82,9 +136,9 @@ def draw_baubles(draw, image_width, image_height, light_group_1, light_group_2):
         )
 
 
-def build_background(image_height, image_width, pos=0):
+def build_image(image_height, image_width, pos=0):
     """
-    Build a background image with a Christmas tree and a pot
+    Build a christmas image with a Christmas tree and a pot.
 
     Args:
         image_height (int): The height of the image
@@ -235,20 +289,21 @@ def build_background(image_height, image_width, pos=0):
     return background
 
 
-def build_image():
-    """
-    Build the image.
-    """
-
+def build_gif():
+    """Build the images and create gif."""
     images = []
     for pos in range(1, 4):
-        image = build_background(IMAGE_HEIGHT, IMAGE_WIDTH, pos)
+        image = build_image(IMAGE_HEIGHT, IMAGE_WIDTH, pos)
         images.append(image)
 
     images[0].save(
-        "merry_christmas.gif", save_all=True, append_images=images[1:], loop=0, duration=100
+        "merry_christmas.gif",
+        save_all=True,
+        append_images=images[1:],
+        loop=0,
+        duration=100,
     )
 
 
 if __name__ == "__main__":
-    build_image()
+    build_gif()
