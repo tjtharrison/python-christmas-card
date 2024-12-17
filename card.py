@@ -49,6 +49,142 @@ def draw_text(draw, coords, text, font, fill=(255, 255, 255)):
     draw.text(coords, text, fill, font=font)
 
 
+def draw_television(draw, image_width, image_height):
+    """
+    Draw a television on the image.
+
+    Args:
+        draw (ImageDraw): The ImageDraw object to draw on.
+        image_width (int): The width of the image.
+        image_height (int): The height of the image.
+    """
+
+    draw_rectangle(
+        draw,
+        [
+            (image_width / 100) * 3,
+            (image_width / 100) * 53,
+            (image_height / 100) * 49,
+            (image_width / 100) * 74,
+        ],
+        fill="black",
+    )
+    draw_rectangle(
+        draw,
+        [
+            (image_width / 100) * 5,
+            (image_width / 100) * 55,
+            (image_height / 100) * 50,
+            (image_width / 100) * 78,
+        ],
+        fill=(206, 198, 209),
+        width=10,
+        outline="black",
+    )
+    draw_rectangle(
+        draw,
+        [
+            (image_width / 100) * 5,
+            (image_height / 100) * 78,
+            (image_width / 100) * 5.2,
+            (image_height / 100) * 87.5,
+        ],
+        fill="black",
+    )
+    draw_rectangle(
+        draw,
+        [
+            (image_width / 100) * 49.5,
+            (image_height / 100) * 78,
+            (image_width / 100) * 49.7,
+            (image_height / 100) * 87.5,
+        ],
+        fill="black",
+    )
+    draw_rectangle(
+        draw,
+        [
+            (image_width / 100) * 7,
+            (image_width / 100) * 57,
+            (image_height / 100) * 38,
+            (image_width / 100) * 76,
+        ],
+        fill=(89, 92, 208),
+    )
+    draw_ellipse(
+        draw,
+        (
+            (image_width / 100) * 43,
+            (image_height / 100) * 63,
+            (image_width / 100) * 44,
+            (image_height / 100) * 64,
+        ),
+        fill="red",
+        outline=(0, 0, 0),
+    )
+    draw_ellipse(
+        draw,
+        (
+            (image_width / 100) * 42,
+            (image_height / 100) * 69,
+            (image_width / 100) * 45,
+            (image_height / 100) * 72,
+        ),
+        fill="black",
+        outline=(0, 0, 0),
+    )
+    draw_ellipse(
+        draw,
+        (
+            (image_width / 100) * 42,
+            (image_height / 100) * 73,
+            (image_width / 100) * 45,
+            (image_height / 100) * 76,
+        ),
+        fill="black",
+        outline=(0, 0, 0),
+    )
+
+
+def draw_hanging_frame(draw, image_width, image_height):
+    """
+    Draw a hanging frame on the image.
+
+    Args:
+        draw (ImageDraw): The ImageDraw object to draw on.
+        image_width (int): The width of the image.
+        image_height (int): The height of the image.
+    """
+    draw_rectangle(
+        draw,
+        [
+            (image_width / 100) * 15,
+            (image_width / 100) * 20,
+            (image_height / 100) * 55,
+            (image_width / 100) * 45,
+        ],
+        fill=(217, 41, 209),
+        width=10,
+        outline="blue",
+    )
+
+    font = ImageFont.truetype("docs/Audiowide-Regular.ttf", 200)
+    texts = [
+        "%%%%%%%%%%%",
+        "%       HOME       %",
+        "%      SWEET      %",
+        "%       HOME       %",
+        "%%%%%%%%%%%",
+    ]
+    for i, text in enumerate(texts):
+        draw_text(
+            draw,
+            ((image_width / 100) * 16, (image_height / 100) * (21 + i * 5)),
+            text,
+            font,
+        )
+
+
 def draw_christmas_tree(draw, image_width, image_height):
     """
     Draw a Christmas tree on the image.
@@ -136,6 +272,29 @@ def draw_baubles(draw, image_width, image_height, light_group_1, light_group_2):
         )
 
 
+def draw_background(draw, image_width, image_height):
+    """
+    Draw the background of the image.
+
+    Args:
+        draw (ImageDraw): The ImageDraw object to draw on.
+        image_width (int): The width of the image.
+        image_height (int): The height of the image.
+    """
+    draw_rectangle(draw, [0, 0, image_height, (image_height / 100) * 80], fill="orange")
+
+    for i in range(0, 100):
+        draw.line(
+            [
+                (image_width / 100) * i,
+                0,
+                (image_width / 100) * i,
+                (image_height / 100) * 80,
+            ],
+            fill="black",
+        )
+
+
 def build_image(image_height, image_width, pos=0):
     """
     Build a christmas image with a Christmas tree and a pot.
@@ -152,133 +311,11 @@ def build_image(image_height, image_width, pos=0):
     background = Image.new("RGB", (image_width, image_height), (255, 255, 0))
     draw = ImageDraw.Draw(background)
 
-    draw_rectangle(draw, [0, 0, image_height, (image_height / 100) * 80], fill="orange")
+    draw_background(draw, image_width, image_height)
 
-    for i in range(0, 100):
-        draw.line(
-            [
-                (image_width / 100) * i,
-                0,
-                (image_width / 100) * i,
-                (image_height / 100) * 80,
-            ],
-            fill="black",
-        )
+    draw_hanging_frame(draw, image_width, image_height)
 
-    draw_rectangle(
-        draw,
-        [
-            (image_width / 100) * 15,
-            (image_width / 100) * 20,
-            (image_height / 100) * 55,
-            (image_width / 100) * 45,
-        ],
-        fill=(217, 41, 209),
-        width=10,
-        outline="blue",
-    )
-
-    font = ImageFont.truetype("docs/Audiowide-Regular.ttf", 200)
-    texts = [
-        "%%%%%%%%%%%",
-        "%       HOME       %",
-        "%      SWEET      %",
-        "%       HOME       %",
-        "%%%%%%%%%%%",
-    ]
-    for i, text in enumerate(texts):
-        draw_text(
-            draw,
-            ((image_width / 100) * 16, (image_height / 100) * (21 + i * 5)),
-            text,
-            font,
-        )
-
-    draw_rectangle(
-        draw,
-        [
-            (image_width / 100) * 3,
-            (image_width / 100) * 53,
-            (image_height / 100) * 49,
-            (image_width / 100) * 74,
-        ],
-        fill="black",
-    )
-    draw_rectangle(
-        draw,
-        [
-            (image_width / 100) * 5,
-            (image_width / 100) * 55,
-            (image_height / 100) * 50,
-            (image_width / 100) * 78,
-        ],
-        fill=(206, 198, 209),
-        width=10,
-        outline="black",
-    )
-    draw_rectangle(
-        draw,
-        [
-            (image_width / 100) * 5,
-            (image_height / 100) * 78,
-            (image_width / 100) * 5.2,
-            (image_height / 100) * 87.5,
-        ],
-        fill="black",
-    )
-    draw_rectangle(
-        draw,
-        [
-            (image_width / 100) * 49.5,
-            (image_height / 100) * 78,
-            (image_width / 100) * 49.7,
-            (image_height / 100) * 87.5,
-        ],
-        fill="black",
-    )
-    draw_rectangle(
-        draw,
-        [
-            (image_width / 100) * 7,
-            (image_width / 100) * 57,
-            (image_height / 100) * 38,
-            (image_width / 100) * 76,
-        ],
-        fill=(89, 92, 208),
-    )
-    draw_ellipse(
-        draw,
-        (
-            (image_width / 100) * 43,
-            (image_height / 100) * 63,
-            (image_width / 100) * 44,
-            (image_height / 100) * 64,
-        ),
-        fill="red",
-        outline=(0, 0, 0),
-    )
-    draw_ellipse(
-        draw,
-        (
-            (image_width / 100) * 42,
-            (image_height / 100) * 69,
-            (image_width / 100) * 45,
-            (image_height / 100) * 72,
-        ),
-        fill="black",
-        outline=(0, 0, 0),
-    )
-    draw_ellipse(
-        draw,
-        (
-            (image_width / 100) * 42,
-            (image_height / 100) * 73,
-            (image_width / 100) * 45,
-            (image_height / 100) * 76,
-        ),
-        fill="black",
-        outline=(0, 0, 0),
-    )
+    draw_television(draw, image_width, image_height)
 
     draw_christmas_tree(draw, image_width, image_height)
 
