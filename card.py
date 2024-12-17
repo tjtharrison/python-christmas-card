@@ -7,215 +7,33 @@ IMAGE_WIDTH = 5000
 CHRISTMAS_TREE_COLOUR = (26, 222, 51)
 
 
-def build_background(image_height, image_width, pos=0):
-    """
-    Build a background image with a Christmas tree and a pot
+def draw_rectangle(draw, coords, fill, width=0, outline=None):
+    draw.rectangle(coords, fill=fill, width=width, outline=outline)
 
-    Args:
-        image_height (int): The height of the image
-        image_width (int): The width of the image
-        pos (int): The position of item in the gif
 
-    Returns:
-        Image: The image with the Christmas tree and pot.
+def draw_ellipse(draw, coords, fill, outline=None):
+    draw.ellipse(coords, fill=fill, outline=outline)
 
-    """
-    # Use pillow to create a new image with the image_url in the middle
-    background = Image.new("RGB", (image_width, image_height), (255, 255, 0))
 
-    # Add orange wallpaper
-    draw = ImageDraw.Draw(background)
-    draw.rectangle([000, 000, image_height, (image_height / 100) * 80], fill="orange")
+def draw_text(draw, coords, text, font, fill=(255, 255, 255)):
+    draw.text(coords, text, fill, font=font)
 
-    # Every 1% horizontal, add a vertical line
-    for i in range(0, 100):
-        draw.line(
+
+def draw_christmas_tree(draw, image_width, image_height):
+    tree_coords = [
+        [(70, 20), (90, 20), (80, 5)],
+        [(70, 35), (90, 35), (80, 15)],
+        [(65, 55), (95, 55), (80, 30)],
+        [(60, 75), (98, 75), (80, 40)],
+    ]
+    for coords in tree_coords:
+        draw.polygon(
             [
-                (image_width / 100) * i,
-                0,
-                (image_width / 100) * i,
-                (image_height / 100) * 80,
-            ],
-            fill="black",
+                (image_width / 100) * x for x, y in coords] + [(image_height / 100) * y for x, y in coords],
+            fill=CHRISTMAS_TREE_COLOUR,
         )
-
-    # Add pink wall hanging
-    draw.rectangle(
-        [
-            (image_width / 100) * 15,
-            (image_width / 100) * 20,
-            (image_height / 100) * 55,
-            (image_width / 100) * 45,
-        ],
-        fill=(217, 41, 209),
-        width=10,
-        outline="blue",
-    )
-    # Add text to wall hanging
-    font = ImageFont.truetype("docs/Audiowide-Regular.ttf", 200)
-    draw.text(
-        ((image_width / 100) * 16, (image_height / 100) * 21),
-        "%%%%%%%%%%%",
-        (255, 255, 255),
-        font=font,
-    )
-    draw.text(
-        ((image_width / 100) * 16, (image_height / 100) * 26),
-        "%       HOME       %",
-        (255, 255, 255),
-        font=font,
-    )
-    draw.text(
-        ((image_width / 100) * 16, (image_height / 100) * 31),
-        "%      SWEET      %",
-        (255, 255, 255),
-        font=font,
-    )
-    draw.text(
-        ((image_width / 100) * 16, (image_height / 100) * 36),
-        "%       HOME       %",
-        (255, 255, 255),
-        font=font,
-    )
-    draw.text(
-        ((image_width / 100) * 16, (image_height / 100) * 40),
-        "%%%%%%%%%%%",
-        (255, 255, 255),
-        font=font,
-    )
-
-    # Add Tele box
-    draw.rectangle(
-        [
-            (image_width / 100) * 3,
-            (image_width / 100) * 53,
-            (image_height / 100) * 49,
-            (image_width / 100) * 74,
-        ],
-        fill="black",
-    )
-    # Draw tele back
-    draw.rectangle(
-        [
-            (image_width / 100) * 5,
-            (image_width / 100) * 55,
-            (image_height / 100) * 50,
-            (image_width / 100) * 78,
-        ],
-        fill=(206, 198, 209),
-        width=10,
-        outline="black",
-    )
-    # Draw tele legs
-    draw.rectangle(
-        [
-            (image_width / 100) * 5,
-            (image_height / 100) * 78,
-            (image_width / 100) * 5.2,
-            (image_height / 100) * 87.5,
-        ],
-        fill="black",
-    )
-    draw.rectangle(
-        [
-            (image_width / 100) * 49.5,
-            (image_height / 100) * 78,
-            (image_width / 100) * 49.7,
-            (image_height / 100) * 87.5,
-        ],
-        fill="black",
-    )
-
-    # Add screen
-    draw.rectangle(
-        [
-            (image_width / 100) * 7,
-            (image_width / 100) * 57,
-            (image_height / 100) * 38,
-            (image_width / 100) * 76,
-        ],
-        fill=(89, 92, 208),
-    )
-    # Add buttons
-    draw.ellipse(
-        (
-            (image_width / 100) * 43,
-            (image_height / 100) * 63,
-            (image_width / 100) * 44,
-            (image_height / 100) * 64,
-        ),
-        fill="red",
-        outline=(0, 0, 0),
-    )
-    draw.ellipse(
-        (
-            (image_width / 100) * 42,
-            (image_height / 100) * 69,
-            (image_width / 100) * 45,
-            (image_height / 100) * 72,
-        ),
-        fill="black",
-        outline=(0, 0, 0),
-    )
-    draw.ellipse(
-        (
-            (image_width / 100) * 42,
-            (image_height / 100) * 73,
-            (image_width / 100) * 45,
-            (image_height / 100) * 76,
-        ),
-        fill="black",
-        outline=(0, 0, 0),
-    )
-
-    # Add Christmas tree
-    draw.polygon(
-        [
-            (image_width / 100) * 70,
-            (image_height / 100) * 20,
-            (image_width / 100) * 90,
-            (image_height / 100) * 20,
-            (image_width / 100) * 80,
-            (image_height / 100) * 5,
-        ],
-        fill=CHRISTMAS_TREE_COLOUR,
-    )
-    draw.polygon(
-        [
-            (image_width / 100) * 70,
-            (image_height / 100) * 35,
-            (image_width / 100) * 90,
-            (image_height / 100) * 35,
-            (image_width / 100) * 80,
-            (image_height / 100) * 15,
-        ],
-        fill=CHRISTMAS_TREE_COLOUR,
-    )
-    draw.polygon(
-        [
-            (image_width / 100) * 65,
-            (image_height / 100) * 55,
-            (image_width / 100) * 95,
-            (image_height / 100) * 55,
-            (image_width / 100) * 80,
-            (image_height / 100) * 30,
-        ],
-        fill=CHRISTMAS_TREE_COLOUR,
-    )
-    draw.polygon(
-        [
-            (image_width / 100) * 60,
-            (image_height / 100) * 75,
-            (image_width / 100) * 98,
-            (image_height / 100) * 75,
-            (image_width / 100) * 80,
-            (image_height / 100) * 40,
-        ],
-        fill=CHRISTMAS_TREE_COLOUR,
-    )
-
-    # Draw tree trunk
-    draw.rectangle(
+    draw_rectangle(
+        draw,
         [
             (image_width / 100) * 75,
             (image_height / 100) * 75,
@@ -224,8 +42,6 @@ def build_background(image_height, image_width, pos=0):
         ],
         fill="brown",
     )
-
-    # Draw red pot
     draw.polygon(
         [
             (image_width / 100) * 60,
@@ -240,98 +56,181 @@ def build_background(image_height, image_width, pos=0):
         fill="red",
     )
 
-    # Draw baubles
-    if pos % 2 == 0:
-        light_group_1 = "yellow"
-        light_group_2 = "white"
-    else:
-        light_group_1 = "white"
-        light_group_2 = "yellow"
 
-    # row 1
-    draw.ellipse(
-        (
-            (image_width / 100) * 70,
-            (image_height / 100) * 20,
-            (image_width / 100) * 75,
-            (image_height / 100) * 25,
-        ),
-        fill=light_group_1,
-        outline="black",
-    )
-    draw.ellipse(
-        (
-            (image_width / 100) * 85,
-            (image_height / 100) * 20,
-            (image_width / 100) * 90,
-            (image_height / 100) * 25,
-        ),
-        fill=light_group_2,
-        outline="black",
-    )
-    # row 2
-    draw.ellipse(
-        (
-            (image_width / 100) * 70,
-            (image_height / 100) * 35,
-            (image_width / 100) * 75,
-            (image_height / 100) * 40,
-        ),
-        fill=light_group_2,
-        outline="black",
-    )
-    draw.ellipse(
-        (
-            (image_width / 100) * 85,
-            (image_height / 100) * 35,
-            (image_width / 100) * 90,
-            (image_height / 100) * 40,
-        ),
-        fill=light_group_1,
-        outline="black",
-    )
-    # row 3
-    draw.ellipse(
-        (
-            (image_width / 100) * 65,
+def draw_baubles(draw, image_width, image_height, light_group_1, light_group_2):
+    bauble_coords = [
+        [70, 20, 75, 25, light_group_1],
+        [85, 20, 90, 25, light_group_2],
+        [70, 35, 75, 40, light_group_2],
+        [85, 35, 90, 40, light_group_1],
+        [65, 55, 70, 60, light_group_1],
+        [90, 55, 95, 60, light_group_2],
+        [60, 75, 65, 80, light_group_2],
+        [95, 75, 100, 80, light_group_1],
+    ]
+    for x1, y1, x2, y2, fill in bauble_coords:
+        draw_ellipse(
+            draw,
+            [
+                (image_width / 100) * x1,
+                (image_height / 100) * y1,
+                (image_width / 100) * x2,
+                (image_height / 100) * y2,
+            ],
+            fill=fill,
+            outline="black",
+        )
+
+
+def build_background(image_height, image_width, pos=0):
+    """
+    Build a background image with a Christmas tree and a pot
+
+    Args:
+        image_height (int): The height of the image
+        image_width (int): The width of the image
+        pos (int): The position of item in the gif
+
+    Returns:
+        Image: The image with the Christmas tree and pot.
+
+    """
+    background = Image.new("RGB", (image_width, image_height), (255, 255, 0))
+    draw = ImageDraw.Draw(background)
+
+    draw_rectangle(draw, [0, 0, image_height, (image_height / 100) * 80], fill="orange")
+
+    for i in range(0, 100):
+        draw.line(
+            [
+                (image_width / 100) * i,
+                0,
+                (image_width / 100) * i,
+                (image_height / 100) * 80,
+            ],
+            fill="black",
+        )
+
+    draw_rectangle(
+        draw,
+        [
+            (image_width / 100) * 15,
+            (image_width / 100) * 20,
             (image_height / 100) * 55,
-            (image_width / 100) * 70,
-            (image_height / 100) * 60,
-        ),
-        fill=light_group_1,
+            (image_width / 100) * 45,
+        ],
+        fill=(217, 41, 209),
+        width=10,
+        outline="blue",
+    )
+
+    font = ImageFont.truetype("docs/Audiowide-Regular.ttf", 200)
+    texts = [
+        "%%%%%%%%%%%",
+        "%       HOME       %",
+        "%      SWEET      %",
+        "%       HOME       %",
+        "%%%%%%%%%%%",
+    ]
+    for i, text in enumerate(texts):
+        draw_text(
+            draw,
+            ((image_width / 100) * 16, (image_height / 100) * (21 + i * 5)),
+            text,
+            font,
+        )
+
+    draw_rectangle(
+        draw,
+        [
+            (image_width / 100) * 3,
+            (image_width / 100) * 53,
+            (image_height / 100) * 49,
+            (image_width / 100) * 74,
+        ],
+        fill="black",
+    )
+    draw_rectangle(
+        draw,
+        [
+            (image_width / 100) * 5,
+            (image_width / 100) * 55,
+            (image_height / 100) * 50,
+            (image_width / 100) * 78,
+        ],
+        fill=(206, 198, 209),
+        width=10,
         outline="black",
     )
-    draw.ellipse(
+    draw_rectangle(
+        draw,
+        [
+            (image_width / 100) * 5,
+            (image_height / 100) * 78,
+            (image_width / 100) * 5.2,
+            (image_height / 100) * 87.5,
+        ],
+        fill="black",
+    )
+    draw_rectangle(
+        draw,
+        [
+            (image_width / 100) * 49.5,
+            (image_height / 100) * 78,
+            (image_width / 100) * 49.7,
+            (image_height / 100) * 87.5,
+        ],
+        fill="black",
+    )
+    draw_rectangle(
+        draw,
+        [
+            (image_width / 100) * 7,
+            (image_width / 100) * 57,
+            (image_height / 100) * 38,
+            (image_width / 100) * 76,
+        ],
+        fill=(89, 92, 208),
+    )
+    draw_ellipse(
+        draw,
         (
-            (image_width / 100) * 90,
-            (image_height / 100) * 55,
-            (image_width / 100) * 95,
-            (image_height / 100) * 60,
+            (image_width / 100) * 43,
+            (image_height / 100) * 63,
+            (image_width / 100) * 44,
+            (image_height / 100) * 64,
         ),
-        fill=light_group_2,
-        outline="black",
+        fill="red",
+        outline=(0, 0, 0),
     )
-    # row 4
-    draw.ellipse(
+    draw_ellipse(
+        draw,
         (
-            (image_width / 100) * 60,
-            (image_height / 100) * 75,
-            (image_width / 100) * 65,
-            (image_height / 100) * 80,
+            (image_width / 100) * 42,
+            (image_height / 100) * 69,
+            (image_width / 100) * 45,
+            (image_height / 100) * 72,
         ),
-        fill=light_group_2,
-        outline="black",
+        fill="black",
+        outline=(0, 0, 0),
     )
-    draw.ellipse(
+    draw_ellipse(
+        draw,
         (
-            (image_width / 100) * 95,
-            (image_height / 100) * 75,
-            (image_width / 100) * 100,
-            (image_height / 100) * 80,
+            (image_width / 100) * 42,
+            (image_height / 100) * 73,
+            (image_width / 100) * 45,
+            (image_height / 100) * 76,
         ),
-        fill=light_group_1,
-        outline="black",
+        fill="black",
+        outline=(0, 0, 0),
     )
+
+    draw_christmas_tree(draw, image_width, image_height)
+
+    light_group_1 = "yellow" if pos % 2 == 0 else "white"
+    light_group_2 = "white" if pos % 2 == 0 else "yellow"
+    draw_baubles(draw, image_width, image_height, light_group_1, light_group_2)
 
     return background
 
@@ -347,7 +246,7 @@ def build_image():
         images.append(image)
 
     images[0].save(
-        "background.gif", save_all=True, append_images=images[1:], loop=0, duration=100
+        "merry_christmas.gif", save_all=True, append_images=images[1:], loop=0, duration=100
     )
 
 
