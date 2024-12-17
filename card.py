@@ -6,7 +6,7 @@ IMAGE_HEIGHT = 5000
 IMAGE_WIDTH = 5000
 
 CHRISTMAS_TREE_COLOUR = (26, 222, 51)
-
+TELEVISION_TEXT = "MERRY CHRISTMAS FROM ALL OF US"
 
 def draw_rectangle(draw, coords, fill, width=0, outline=None):
     """
@@ -49,7 +49,7 @@ def draw_text(draw, coords, text, font, fill=(255, 255, 255)):
     draw.text(coords, text, fill, font=font)
 
 
-def draw_television(draw, image_width, image_height):
+def draw_television(draw, image_width, image_height, pos=0):
     """
     Draw a television on the image.
 
@@ -143,6 +143,24 @@ def draw_television(draw, image_width, image_height):
         ),
         fill="black",
         outline=(0, 0, 0),
+    )
+    
+    INITIAL_PADDING = 20 - pos
+
+    # TODO: Fix this logic
+    if INITIAL_PADDING < 0:
+        display_text = INITIAL_PADDING * " " + TELEVISION_TEXT[pos:]
+    else:
+        display_text = TELEVISION_TEXT[pos:]
+    
+    if len(display_text) > (image_width / 100) * 68:
+        display_text = display_text[:int((image_width / 100) * 68)]
+    
+    draw_text(
+        draw,
+        ((image_width / 100) * 8, (image_height / 100) * 58),
+        display_text,
+        ImageFont.truetype("docs/Audiowide-Regular.ttf", 200),
     )
 
 
@@ -315,7 +333,7 @@ def build_image(image_height, image_width, pos=0):
 
     draw_hanging_frame(draw, image_width, image_height)
 
-    draw_television(draw, image_width, image_height)
+    draw_television(draw, image_width, image_height, pos)
 
     draw_christmas_tree(draw, image_width, image_height)
 
@@ -329,7 +347,7 @@ def build_image(image_height, image_width, pos=0):
 def build_gif():
     """Build the images and create gif."""
     images = []
-    for pos in range(1, 4):
+    for pos in range(1, len(TELEVISION_TEXT) + 20):
         image = build_image(IMAGE_HEIGHT, IMAGE_WIDTH, pos)
         images.append(image)
 
@@ -338,7 +356,7 @@ def build_gif():
         save_all=True,
         append_images=images[1:],
         loop=0,
-        duration=100,
+        duration=400,
     )
 
 
