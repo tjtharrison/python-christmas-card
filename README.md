@@ -1,2 +1,5 @@
 # python-christmas-card
-Python based Christmas card based off BBC video
+
+Recreating https://www.facebook.com/reel/464581732982596 in Python using Pillow.
+
+![](./merry_christmas.gif)
